@@ -1,0 +1,13 @@
+pandas
+numpy
+python-dotenv
+fastapi
+scikit-learn
+uvicorn
+jupyter
+ipykernel
+notebook
+matplotlib
+scipy
+seaborn
+requests
