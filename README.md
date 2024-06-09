@@ -3,10 +3,7 @@
 ## Getting Started
 1. Clone the repository
 2. Make sure you have python installed
-3. Create a virtual environment in the project folder using `python -m venv venv`
-4. Activate the environment using `source venv/bin/activate` (on Windows, use `venv\Scripts\activate` instead)
-5. Install the required packages using `pip install -r requirements.txt`
-
+3. On windows: run `setup.bat` in Command Line. On macOS/Linux run `chmod +x setup.sh` followed by `source setup.sh`
 You should now be able to open the notebooks (`.ipynb` files) and run the code.
 
 ## Running the server
