@@ -12,3 +12,4 @@ scipy
 seaborn
 requests
 mlflow
+gradio
