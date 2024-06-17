@@ -19,8 +19,8 @@ iface = gr.Interface(
     fn=classify_text,
     inputs=gr.Textbox(lines=2, placeholder="Enter text here..."),
     outputs=gr.Textbox(),
-    title="Text Classifier",
-    description="Enter a piece of text to classify it."
+    title="Spam GitHub Issues classifier",
+    description="Enter concatenated issue title and issue body"
 )
 
 # Launch the interface
