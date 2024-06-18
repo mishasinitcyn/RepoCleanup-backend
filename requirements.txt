@@ -13,3 +13,4 @@ seaborn
 requests
 mlflow
 gradio
+nltk
