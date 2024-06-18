@@ -12,4 +12,5 @@ scipy
 seaborn
 requests
 mlflow
+gradio
 nltk
