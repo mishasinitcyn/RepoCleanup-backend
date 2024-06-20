@@ -1,36 +1,58 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from typing import List
+from typing import List, Dict
+import httpx
 
-# Placeholder for the ClassificationItem class
-class ClassificationItem(BaseModel):
+class IssueTag(BaseModel):
+    id: int
     label: str
+    
+class Issue(BaseModel):
+    id: int
+    # issue_number: int
+    # issue_url: str
+    state: str
+    # issue_author: str
+    # issue_label: str
     title: str
     body: str
-    
-# Placeholder for the Issue class
-class Issue(BaseModel):
-    issue_id: int
-    issue_number: int
-    issue_url: str
-    issue_state: str
-    issue_author: str
-    issue_label: str
-    issue_title: str
-    issue_body: str
+
+    class Config:
+        extra = "ignore"
 
 app = FastAPI()
+origins = [
+    "http://localhost:4200"
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-@app.post("/classify-issues")
-async def classify(request: List[Issue]):
-    # Placeholder for the classification logic
-    response = [{"issue_id": issue.issue_id, "issue_label": issue.issue_label} for issue in enumerate(request)]
-    return response
+CLASSIFIER_URL = "http://127.0.0.1:8080/classify_spam"
 
-@app.post("/classify-issue")
-async def classify(request: Issue):
-    # Placeholder for the classification logic
-    return {"issue_id":request.issue_id, "issue_label":"spam"}
+@app.post("/classify_spam", response_model=List[IssueTag])
+async def classify_spam(issues: List[Dict]):
+    extracted_issues = []
+    for issue in issues:
+        extracted_issue = {
+            "id": issue["id"],
+            "state": issue["state"],
+            "title": issue["title"],
+            "body": issue["body"]
+        }
+        extracted_issues.append(extracted_issue)
+    
+    print(extracted_issues)
+    async with httpx.AsyncClient() as client:
+        response = await client.post(CLASSIFIER_URL, json=extracted_issues)
+        response.raise_for_status()
+        issue_tags = response.json()
+    return issue_tags
+    #return [{"id": 1, "label": "spam"}]
 
-# Run the app using `uvicorn` by executing:
-# uvicorn app:app --reload
+# uvicorn main:app --reload
